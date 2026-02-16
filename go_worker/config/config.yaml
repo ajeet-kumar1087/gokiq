@@ -1,0 +1,22 @@
+redis:
+  url: "redis:6379"
+  password: ""
+  db: 0
+
+sidecar:
+  url: "http://rails_sidecar:9292"
+  timeout: 30s
+
+worker:
+  concurrency: 500
+  queues: ["default", "high", "low"]
+  poll_interval: 50ms
+
+retry:
+  max_attempts: 25
+  base_delay: 15s
+  max_delay: 24h
+
+logging:
+  level: "info"
+  format: "json"

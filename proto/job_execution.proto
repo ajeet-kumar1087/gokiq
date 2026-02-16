@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package job_execution;
+
+option go_package = "internal/sidecar/proto/job_execution";
+
+service JobExecution {
+  rpc ExecuteJob (JobRequest) returns (JobResponse);
+  rpc HealthCheck (HealthRequest) returns (HealthResponse);
+}
+
+message JobRequest {
+  string class = 1;
+  string jid = 2;
+  string queue = 3;
+  repeated string args = 4; // Using string array for simplicity in this prototype
+  double created_at = 5;
+  double enqueued_at = 6;
+}
+
+message JobResponse {
+  string status = 1;
+  string jid = 2;
+  double execution_time = 3;
+  string error_message = 4;
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;
+  bool rails_loaded = 2;
+}

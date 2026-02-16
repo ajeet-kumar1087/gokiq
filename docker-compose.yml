@@ -1,0 +1,83 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  rails_app:
+    build:
+      context: ./rails_app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - RAILS_ENV=development
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./rails_app:/app
+    command: bundle exec rails server -b 0.0.0.0
+
+  rails_sidecar:
+    build:
+      context: ./rails_sidecar
+      dockerfile: Dockerfile
+    ports:
+      - "9292:9292"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - RAILS_ENV=development
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./rails_sidecar:/app
+    command: bundle exec falcon serve --bind http://0.0.0.0:9292
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9292/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  go_worker:
+    build:
+      context: ./go_worker
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis:6379
+      - SIDECAR_URL=http://rails_sidecar:9292
+    depends_on:
+      redis:
+        condition: service_healthy
+      rails_sidecar:
+        condition: service_healthy
+    restart: unless-stopped
+
+  sidekiq_standard:
+    build:
+      context: ./rails_app
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - RAILS_ENV=development
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./rails_app:/app
+    command: bundle exec sidekiq -c 10 -q default
+    profiles:
+      - benchmark
+
+volumes:
+  redis_data:
