@@ -51,12 +51,21 @@ func NewClient(cfg config.SidecarConfig) SidecarClient {
 
 // NewHTTPClient creates a new HTTP client for sidecar communication
 func NewHTTPClient(baseURL string, timeout time.Duration) *HTTPClient {
+	// Create a custom transport to handle high concurrency
+	transport := &http.Transport{
+		MaxIdleConns:        100,
+		MaxIdleConnsPerHost: 100,
+		MaxConnsPerHost:     100,
+		IdleConnTimeout:     90 * time.Second,
+	}
+
 	return &HTTPClient{
 		baseURL: baseURL,
 		httpClient: &http.Client{
-			Timeout: timeout,
+			Timeout:   timeout,
+			Transport: transport,
 		},
-		breaker: NewCircuitBreaker(5, 30*time.Second), // 5 failures, 30s reset
+		breaker: NewCircuitBreaker(10, 30*time.Second), // Increased failure threshold
 	}
 }
 

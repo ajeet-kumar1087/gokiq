@@ -40,7 +40,7 @@ services:
         condition: service_healthy
     volumes:
       - ./rails_sidecar:/app
-    command: bundle exec falcon serve --bind http://0.0.0.0:9292
+    command: bundle exec falcon serve --bind http://0.0.0.0:9292 --instances 4
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9292/health"]
       interval: 30s
