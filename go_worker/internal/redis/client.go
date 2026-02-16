@@ -22,20 +22,31 @@ type Client struct {
 
 // NewClient creates a new Redis client with connection pooling
 func NewClient(cfg config.RedisConfig) (*Client, error) {
-	opts := &redis.Options{
-		Addr:     cfg.URL,
-		Password: cfg.Password,
-		DB:       cfg.DB,
-		// Connection pool settings
-		PoolSize:     10,
-		MinIdleConns: 5,
-		MaxRetries:   3,
-		DialTimeout:  5 * time.Second,
-		ReadTimeout:  3 * time.Second,
-		WriteTimeout: 3 * time.Second,
-		PoolTimeout:  4 * time.Second,
-		IdleTimeout:  5 * time.Minute,
+	var opts *redis.Options
+	var err error
+
+	if len(cfg.URL) > 8 && cfg.URL[:8] == "redis://" {
+		opts, err = redis.ParseURL(cfg.URL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse Redis URL: %w", err)
+		}
+	} else {
+		opts = &redis.Options{
+			Addr:     cfg.URL,
+			Password: cfg.Password,
+			DB:       cfg.DB,
+		}
 	}
+
+	// Connection pool settings
+	opts.PoolSize = 10
+	opts.MinIdleConns = 5
+	opts.MaxRetries = 3
+	opts.DialTimeout = 5 * time.Second
+	opts.ReadTimeout = 3 * time.Second
+	opts.WriteTimeout = 3 * time.Second
+	opts.PoolTimeout = 4 * time.Second
+	opts.IdleTimeout = 5 * time.Minute
 
 	client := redis.NewClient(opts)
 	ctx := context.Background()

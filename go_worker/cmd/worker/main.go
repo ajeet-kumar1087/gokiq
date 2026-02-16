@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -24,11 +25,16 @@ func main() {
 	}
 
 	// Override config with environment variables if present
+	if url := os.Getenv("REDIS_URL"); url != "" {
+		cfg.Redis.URL = url
+	}
 	if url := os.Getenv("SIDECAR_URL"); url != "" {
 		cfg.Sidecar.URL = url
 	}
-	if protocol := os.Getenv("SIDECAR_PROTOCOL"); protocol != "" {
-		cfg.Sidecar.Protocol = protocol
+	if concurrencyStr := os.Getenv("WORKER_CONCURRENCY"); concurrencyStr != "" {
+		if c, err := strconv.Atoi(concurrencyStr); err == nil {
+			cfg.Worker.Concurrency = c
+		}
 	}
 
 	// Initialize Redis client

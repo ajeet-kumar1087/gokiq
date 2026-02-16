@@ -46,14 +46,6 @@ const (
 
 // NewClient creates a new SidecarClient based on configuration
 func NewClient(cfg config.SidecarConfig) SidecarClient {
-	if cfg.Protocol == "grpc" {
-		client, err := NewGRPCClient(cfg.URL, cfg.Timeout)
-		if err != nil {
-			// Fallback or log error - for prototype we'll panic to be explicit
-			panic(fmt.Sprintf("failed to initialize gRPC client: %v", err))
-		}
-		return client
-	}
 	return NewHTTPClient(cfg.URL, cfg.Timeout)
 }
 

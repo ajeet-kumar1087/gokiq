@@ -20,7 +20,6 @@ type RedisConfig struct {
 // SidecarConfig contains Rails sidecar connection settings
 type SidecarConfig struct {
 	URL      string        `yaml:"url"`
-	Protocol string        `yaml:"protocol"` // "http" or "grpc"
 	Timeout  time.Duration `yaml:"timeout"`
 }
 

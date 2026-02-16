@@ -15,17 +15,17 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 # Copy Gemfile and Gemfile.lock (if it exists)
-COPY rails_app/Gemfile rails_app/Gemfile.lock* ./
+COPY Gemfile Gemfile.lock* ./
 
 # Install gems
 RUN bundle install --jobs 4 --retry 3
 
 # Copy package.json if it exists
-COPY rails_app/package*.json ./
+COPY package*.json ./
 RUN if [ -f package.json ]; then npm install; fi
 
 # Copy application code
-COPY rails_app .
+COPY . .
 
 # Precompile assets (if needed)
 RUN if [ -f config/application.rb ]; then \
