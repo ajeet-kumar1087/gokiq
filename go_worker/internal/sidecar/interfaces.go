@@ -1,6 +1,6 @@
 package sidecar
 
-import "go-sidekiq-worker/internal/job"
+import "gokiq/internal/job"
 
 // SidecarClient defines the interface for communicating with the Rails sidecar
 type SidecarClient interface {

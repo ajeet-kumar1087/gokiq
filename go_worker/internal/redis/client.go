@@ -10,8 +10,8 @@ import (
 
 	"github.com/go-redis/redis/v8"
 
-	"go-sidekiq-worker/internal/config"
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/config"
+	"gokiq/internal/job"
 )
 
 // Client implements the RedisClient interface with connection pooling

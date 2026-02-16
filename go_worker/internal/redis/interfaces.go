@@ -3,7 +3,7 @@ package redis
 import (
 	"time"
 
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/job"
 )
 
 // RedisClient defines the interface for Redis operations

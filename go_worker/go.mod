@@ -1,4 +1,4 @@
-module go-sidekiq-worker
+module gokiq
 
 go 1.24.0
 

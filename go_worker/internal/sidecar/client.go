@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"go-sidekiq-worker/internal/config"
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/config"
+	"gokiq/internal/job"
 )
 
 // HTTPClient implements the SidecarClient interface using HTTP

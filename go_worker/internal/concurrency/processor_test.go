@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/job"
 )
 
 // MockJobExecutor implements JobExecutor for testing

@@ -8,8 +8,8 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/go-redis/redismock/v8"
 
-	"go-sidekiq-worker/internal/config"
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/config"
+	"gokiq/internal/job"
 )
 
 func TestNewClient(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/job"
 )
 
 func TestHTTPClient_ExecuteJob_Success(t *testing.T) {

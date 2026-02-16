@@ -8,8 +8,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"go-sidekiq-worker/internal/job"
-	pb "go-sidekiq-worker/internal/sidecar/proto/job_execution"
+	"gokiq/internal/job"
+	pb "gokiq/internal/sidecar/proto/job_execution"
 )
 
 // GRPCClient implements the SidecarClient interface using gRPC

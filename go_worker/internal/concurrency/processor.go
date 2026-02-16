@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"go-sidekiq-worker/internal/job"
+	"gokiq/internal/job"
 )
 
 // JobExecutor defines the interface for executing jobs

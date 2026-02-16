@@ -8,10 +8,10 @@ import (
 	"syscall"
 	"time"
 
-	"go-sidekiq-worker/internal/config"
-	"go-sidekiq-worker/internal/concurrency"
-	"go-sidekiq-worker/internal/redis"
-	"go-sidekiq-worker/internal/sidecar"
+	"gokiq/internal/config"
+	"gokiq/internal/concurrency"
+	"gokiq/internal/redis"
+	"gokiq/internal/sidecar"
 
 	"gopkg.in/yaml.v2"
 )
